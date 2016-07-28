@@ -55,9 +55,7 @@ export default class PostsDeck extends React.Component {
         data.posts = Posts.find({'createdBy.reference': Meteor.userId()},{sort: {createdAt: -1}}).fetch();
       }
     }
-
-    //console.log('data.posts', data.posts);
-
+    
     return data;
   }
 
@@ -105,13 +103,10 @@ export default class PostsDeck extends React.Component {
   }
 
 
-  // <CardActions>
-  //   <Button className='editButton' label='Edit' style={{color: 'lightgray'}} />
-  //   <Button className='deleteButton' onMouseUp={self.handleDeleteButton.bind(self, i, item)} label='Delete' style={{color: 'lightgray'}} />
-  // </CardActions>
+
 
   handleDeleteButton(index, post){
-    console.log('handleDeleteButton');
+    //console.log('handleDeleteButton');
 
     removePost.call({
       _id: post._id
@@ -126,8 +121,6 @@ export default class PostsDeck extends React.Component {
 
   renderCardActions(i, item){
 
-    // <Button className='editButton' label='Edit' style={{color: 'lightgray'}} />
-
     if (item && item.createdBy && item.createdBy.reference) {
       if (item.createdBy.reference === Meteor.userId()) {
         return (
@@ -138,7 +131,6 @@ export default class PostsDeck extends React.Component {
       }
     }
   }
-
 }
 
 

@@ -5,15 +5,20 @@ module.exports = {
     verifyElements() {
       return this
         .verify.elementPresent('#practitionersPage')
-        .verify.elementPresent('#practitionersTable')
-        .verify.elementPresent('#practitionersTable .practitionerRow:nth-child(1)');
+        .verify.elementPresent('#practitionersTable');
     },
-    verifyListCard() {
-      return this
-        .verify.elementPresent('#practitionersTable')
-        .verify.elementPresent('#practitionersTable .practitionerRow:nth-child(1)')
-        .verify.elementPresent('#practitionersTable .practitionerRow:nth-child(1) .name')
-        .verify.elementPresent('#practitionersTable .practitionerRow:nth-child(1) .avatar');
+    verifyListRow(index) {
+      this
+        .verify.elementPresent('#practitionersTable');
+
+      if (index > 0) {
+        this
+          .verify.elementPresent('#practitionersTable .practitionerRow:nth-child(' + index + ')')
+          .verify.elementPresent('#practitionersTable .practitionerRow:nth-child(' + index + ') .name')
+          .verify.elementPresent('#practitionersTable .practitionerRow:nth-child(' + index + ') .avatar');
+      }
+
+      return this;
     },
     verifyNewPractitionerCard() {
       return this
@@ -23,12 +28,14 @@ module.exports = {
         .verify.elementPresent('#practitionersPage .practitionerDetail input[name="photo"]')
         .verify.elementPresent('#practitionersPage .practitionerDetail input[name="active"]');
     },
-    verifyPractitionerDetails(name, avatar) {
+    verifyDetails(name, avatar) {
       return this
-        .verify.containsText('#practitionersPage .practitionerDetail input[name="name"]', name)
-        .verify.containsText('#practitionersPage .practitionerDetail input[name="photo"]', avatar);
+        .verify.attributeEquals('#practitionersPage .practitionerDetail input[name="name"]', 'value', name)
+        .verify.attributeEquals('#practitionersPage .practitionerDetail input[name="photo"]', 'value', avatar)
+        .verify.elementPresent('#deletePractitionerButton')
+        .verify.elementPresent('#savePractitionerButton');
     },
-    listContainsPractitioner (index, name, avatar) {
+    listContains (index, name, avatar) {
       return this
         .verify.elementPresent('#practitionersTable')
         .verify.elementPresent('#practitionersTable .practitionerRow:nth-child(' + index + ')')
@@ -47,18 +54,65 @@ module.exports = {
     selectPractitioner(index){
       return this.click('#practitionersTable .practitionerRow:nth-child(' + index + ')');
     },
-    createNewPractitioner(name, gender, photo) {
-      return this
+    create(name, gender, photo) {
+      var self = this;
+
+      this
         .verify.elementPresent('#practitionersPage .practitionerDetail')
-
         .verify.elementPresent('#practitionersPage .practitionerDetail input[name="name"]')
-        .clearValue('#practitionersPage .practitionerDetail input[name="name"]')
-        .setValue('#practitionersPage .practitionerDetail input[name="name"]', name)
+        .clearValue('#practitionersPage .practitionerDetail input[name="name"]');
 
+      if (name) {
+        var nameArray = name.split('');
+        nameArray.forEach(function(letter){
+          self.setValue('#practitionersPage .practitionerDetail input[name="name"]', letter);
+        });
+      }
+
+      if (photo) {
+        var photoArray = photo.split('');
+        photoArray.forEach(function(letter){
+          self.setValue('#practitionersPage .practitionerDetail input[name="photo"]', letter);
+        });
+      }
+
+      return this
         .verify.elementPresent('#savePractitionerButton')
         .click('#savePractitionerButton');
     },
+    clickEditButton(){
+      return this
+        .verify.elementPresent('#practitionersPage');
+    },
+    edit(oldName, newName){
+      this
+        .verify.elementPresent('#practitionersPage')
+        .clearValue('#practitionersPage .practitionerDetail input[name="name"]');
 
+      if (name) {
+        var nameArray = name.split('');
+        nameArray.forEach(function(letter){
+          self.setValue('#practitionersPage .practitionerDetail input[name="name"]', letter);
+        });
+      }
+
+      return this.click('#savePractitionerButton');
+    },
+    select(index, name){
+      return this
+        .verify.elementPresent('#practitionersPage')
+        .verify.elementPresent('#practitionersTable .practitionerRow:nth-child(' + index + ')')
+        .verify.containsText('#practitionersTable .practitionerRow:nth-child(' + index + ') .name', name)
+        .click('#practitionersTable .practitionerRow:nth-child(' + index + ')');
+    },
+    delete(){
+      return this
+        .verify.elementPresent('#practitionersPage')
+    },
+    listDoesNotContain(name){
+      return this
+        .verify.elementPresent('#practitionersPage')
+    },
     pause: function(time, client) {
       client.pause(time);
       return this;
