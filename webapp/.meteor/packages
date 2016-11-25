@@ -62,6 +62,10 @@ clinical:hl7-resource-goal
 clinical:hl7-resource-questionnaire
 clinical:hl7-resource-questionnaire-response
 
+clinical:hl7-resource-bundle
+clinical:hl7-resource-parameters
+clinical:hl7-resource-message-header
+
 # partially implemented FHIR resources
 #clinical:hl7-resource-observation
 #clinical:hl7-resource-device
