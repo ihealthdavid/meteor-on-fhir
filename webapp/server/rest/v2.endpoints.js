@@ -46,18 +46,36 @@ JsonRoutes.add("get", "/open/hl7/v2/message/:id", function (req, res, next) {
 
 JsonRoutes.add("post", "/open/hl7/v2/message", function (req, res, next) {
   if (process.env.OPEN) {
+
     console.log("==================================================================================");
     console.log("Received a new HL7 v2 message at " + moment().format("MMM DD, YYYY hh:mm:ss a"));
     console.log('POST /v2/Message/');
     console.log("");
-
     console.log(req.body);
+
+    // slap a timestamp on the incoming message
+    req.body.timestamp = new Date();
+
+    // and log it into the MessageHeader log
+    MessageHeaders.insert(req.body);
+
+    // then start parsing the daata
+    req.body.data.forEach(function(dataPayload){
+
+      // and storing it to a collection based on it's resourceType
+      if (dataPayload.resourceType === "Patient") {
+        Patients.insert(dataPayload);
+      }
+    });
+
 
     let textMessage = "Success!  Wrote some text regarding message " + req.params.id + " to the command line.";
     JsonRoutes.sendResult(res, {
       code: 200,
       data: {text: textMessage}
     });
+
+
     console.log("");
 
   } else {
