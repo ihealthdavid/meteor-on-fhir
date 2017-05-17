@@ -102,7 +102,7 @@ export default class PractitionerTable extends React.Component {
 
 
     return(
-      <Table id="practitionersTable" responses hover >
+      <Table id="practitionersTable" responses hover  >
         <thead>
           <tr>
             <th className="name">name</th>

@@ -1,20 +1,16 @@
-import React  from 'react';
-import ReactMixin  from 'react-mixin';
-import { ReactMeteorData } from 'meteor/react-meteor-data';
+import { Col, Row } from 'react-bootstrap';
+import { darkBaseTheme, lightBaseTheme } from 'material-ui/styles';
 
-import TextField from 'material-ui/TextField';
-
-import { Row, Col } from 'react-bootstrap';
-
-import { VerticalCanvas } from '/imports/ui/components/VerticalCanvas';
-import { MobilePadding } from '/imports/ui/components/MobilePadding';
-
-import { browserHistory } from 'react-router';
 import { Accounts } from 'meteor/accounts-base';
 import { Bert } from 'meteor/themeteorchef:bert';
-
+import { MobilePadding } from '/imports/ui/components/MobilePadding';
 import RaisedButton from 'material-ui/RaisedButton';
-import { lightBaseTheme, darkBaseTheme } from 'material-ui/styles';
+import React  from 'react';
+import { ReactMeteorData } from 'meteor/react-meteor-data';
+import ReactMixin  from 'react-mixin';
+import TextField from 'material-ui/TextField';
+import { VerticalCanvas } from '/imports/ui/components/VerticalCanvas';
+import { browserHistory } from 'react-router';
 
 if(process.env.NODE_ENV === "test") console.log("Signup[lightBaseTheme]", lightBaseTheme);
 if(process.env.NODE_ENV === "test") console.log("Signup[darkBaseTheme]", darkBaseTheme);
@@ -90,9 +86,9 @@ export class Signup extends React.Component {
     Accounts.createUser(newUserData, function(error, result){
       if (error) {
         // for some reason, we're getting an "Email already exists!" on signup
-        //if (!error.reason.includes("Email already exists.")) {
+        if (!error.reason.includes("Email already exists")) {
           Bert.alert(error.reason, 'danger');
-        //}
+        }
       }
       if (result) {
         console.log("Accounts.createUser[result]", result);

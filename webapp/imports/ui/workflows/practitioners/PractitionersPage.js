@@ -1,8 +1,12 @@
-import { CardText, CardTitle } from 'material-ui/Card';
+import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
+import { CardActions, CardText, CardTitle } from 'material-ui/Card';
 import { Tab, Tabs } from 'material-ui/Tabs';
 
+import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon';
 import Glass from '/imports/ui/Glass';
 import { GlassCard } from '/imports/ui/components/GlassCard';
+import IconLocationOn from 'material-ui/svg-icons/communication/location-on';
 import PractitionerDetail  from '/imports/ui/workflows/practitioners/PractitionerDetail';
 import PractitionerTable  from '/imports/ui/workflows/practitioners/PractitionerTable';
 import React  from 'react';
@@ -10,13 +14,21 @@ import { ReactMeteorData } from 'meteor/react-meteor-data';
 import ReactMixin  from 'react-mixin';
 import { VerticalCanvas } from '/imports/ui/components/VerticalCanvas';
 
+const recentsIcon = <FontIcon className="material-icons">restore</FontIcon>;
+const favoritesIcon = <FontIcon className="material-icons">favorite</FontIcon>;
+const nearbyIcon = <IconLocationOn />;
+
 Session.setDefault('practitionerPageTabIndex', 1);
 Session.setDefault('practitionerSearchFilter', '');
 Session.setDefault('selectedPractitioner', false);
 
 export class PractitionersPage extends React.Component {
+
+
+
   getMeteorData() {
     let data = {
+      selectedIndex: 0,
       style: {
         opacity: Session.get('globalOpacity'),
         tab: {
@@ -40,6 +52,9 @@ export class PractitionersPage extends React.Component {
   // this could be a mixin
   handleTabChange(index){
     Session.set('practitionerPageTabIndex', index);
+  }
+  select(index){
+    //this.setState({selectedIndex: index});
   }
 
   // this could be a mixin
@@ -71,6 +86,23 @@ export class PractitionersPage extends React.Component {
                 </Tab>
               </Tabs>
             </CardText>
+            <BottomNavigation selectedIndex={this.data.selectedIndex}>
+              <BottomNavigationItem
+                label="Recents"
+                icon={recentsIcon}
+                onTouchTap={this.select(0)}
+              />
+              <BottomNavigationItem
+                label="Favorites"
+                icon={favoritesIcon}
+                onTouchTap={this.select(1)}
+              />
+              <BottomNavigationItem
+                label="Nearby"
+                icon={nearbyIcon}
+                onTouchTap={this.select(2)}
+              />
+            </BottomNavigation>
           </GlassCard>
         </VerticalCanvas>
       </div>

@@ -8,8 +8,8 @@
       "backgroundImagePath": "/backgrounds/medical/Gradient.jpg"      
     },
     "app": {
-      "showUnderConstruction": false,
-      "showExperimental": false
+      "showUnderConstruction": true,
+      "showExperimental": true
     },
     "defaults": {
       "avatars": true,
@@ -23,7 +23,7 @@
       "disableFooter": false,
       "darkroom": false,
       "iFrameEnabled": false,
-      "iFrameUrl": "https://www.wikipedia.org",
+      "iFrameUrl": "http://www.dartmouthatlas.org/",
       "paginationLimit": 100,
       "subscriptionLimit": 1000,
       "cards": {
